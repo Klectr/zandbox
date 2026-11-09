@@ -68,6 +68,8 @@
   .nav .btn { height: 32px; padding: 0 12px; }
 
   .hero { padding: 88px 0 56px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+  .hero-art { width: 100%; display: block; animation: arrive .9s cubic-bezier(.22,.61,.36,1) .3s both; }
   .hero h1 { font-size: 38px; line-height: 1.25; font-weight: 600; letter-spacing: -.01em; margin: 0 0 16px; max-width: 22ch; }
   .hero p.lede { font-size: 16px; color: var(--text-secondary); max-width: 58ch; margin: 0 0 28px; }
   .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -159,6 +161,7 @@
 
   @media (max-width: 760px) {
     .hero { padding: 56px 0 40px; }
+    .hero-grid { grid-template-columns: 1fr; }
     .hero h1 { font-size: 30px; }
     .steps, .feats { grid-template-columns: 1fr; }
     .lab-side { display: none; }
@@ -188,6 +191,8 @@
 
 <main class="wrap">
   <div class="hero">
+   <div class="hero-grid">
+    <div>
     <h1>Every component. Every state. Your real CSS.</h1>
     <p class="lede">Zandbox is a component lab for Bun + HTMX projects. Every component, in every state, on its own stage — styled by the CSS your app actually ships, so what you see here is what your users get. No build step, no rendering library, no second design system to keep in sync.</p>
     <div class="hero-actions">
@@ -195,6 +200,9 @@
       <span class="cmd">bun run ~/zandbox/engine/cli.ts init <button type="button" data-copy="bun run ~/zandbox/engine/cli.ts init">Copy</button></span>
     </div>
     <p class="hero-note">Dev-only. Binds 127.0.0.1, ships nowhere near production.</p>
+    </div>
+    <img class="hero-art" src="/sandbox-hero.png" alt="Klectr the Alien playing in a sandbox, building a sandcastle out of UI components">
+   </div>
   </div>
 
   <div class="lab" role="img" aria-label="The Zandbox lab: a sidebar of stories on the left, one story open in the stage on the right.">
