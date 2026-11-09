@@ -48,7 +48,7 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg-layout); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.5714; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; overflow-x: clip; background: var(--bg-layout); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.5714; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
   :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
   .wrap { max-width: 1060px; margin: 0 auto; padding: 0 24px; }
@@ -123,6 +123,40 @@
   footer.site a:hover { color: var(--text); }
   footer.site .sp { margin-left: auto; }
 
+  .hero { position: relative; }
+  .hero::before { content: ""; position: absolute; left: 50%; top: -30px; width: 900px; height: 460px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(251,146,60,.17), rgba(251,146,60,.05) 52%, transparent 72%); pointer-events: none; }
+  .hero > * { position: relative; }
+  @keyframes arrive { from { opacity: 0; filter: blur(10px); transform: translateY(10px); } to { opacity: 1; filter: blur(0); transform: none; } }
+  .hero h1 { animation: arrive .8s cubic-bezier(.22,.61,.36,1) both; }
+  .hero .lede { animation: arrive .8s cubic-bezier(.22,.61,.36,1) .08s both; }
+  .hero .hero-actions { animation: arrive .8s cubic-bezier(.22,.61,.36,1) .16s both; }
+  .hero .hero-note { animation: arrive .8s cubic-bezier(.22,.61,.36,1) .24s both; }
+  .lab { animation: arrive .9s cubic-bezier(.22,.61,.36,1) .2s both; }
+  .js .reveal { opacity: 0; filter: blur(6px); transform: translateY(12px); transition: opacity .7s ease, filter .7s ease, transform .7s ease; }
+  .js .reveal.in { opacity: 1; filter: blur(0); transform: none; }
+  .proof { color: var(--text-secondary); font-size: 14px; margin: 4px 0 0; }
+  .proof b { color: var(--text); font-weight: 600; }
+  .demo-card { margin-top: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-container); overflow: hidden; }
+  .demo-head { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .demo-head h3 { font-size: 16px; margin: 0; font-weight: 600; }
+  .demo-head p { margin: 0; color: var(--text-secondary); font-size: 12px; }
+  .demo-head .sp { margin-left: auto; }
+  .demo-pause { background: var(--fill-tertiary); border: 1px solid var(--border); color: var(--text); border-radius: 6px; height: 28px; padding: 0 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+  .demo-pause:hover { background: rgba(255,255,255,.1); }
+  .demo-body { padding: 18px 20px; font-family: var(--mono); font-size: 12px; line-height: 1.9; color: var(--text-secondary); background: var(--bg-container-secondary); min-height: 152px; }
+  .demo-body .k { color: var(--text); }
+  .boot-line { opacity: 0; animation: bootseq 9s linear infinite; }
+  .boot-line:nth-child(2) { animation-delay: .45s; }
+  .boot-line:nth-child(3) { animation-delay: .9s; }
+  .boot-line:nth-child(4) { animation-delay: 1.35s; }
+  .boot-line:nth-child(5) { animation-delay: 1.8s; }
+  .boot-line:nth-child(6) { animation-delay: 2.25s; }
+  @keyframes bootseq { 0% { opacity: 0; } 4% { opacity: 1; } 88% { opacity: 1; } 96%, 100% { opacity: 0; } }
+  .demo-card.paused .boot-line { animation-play-state: paused; }
+  .faq-item { border-top: 1px solid var(--border); padding: 20px 0; }
+  .faq-item h3 { font-size: 16px; margin: 0 0 6px; font-weight: 600; }
+  .faq-item p { margin: 0; color: var(--text-secondary); max-width: 68ch; }
+
   @media (max-width: 760px) {
     .hero { padding: 56px 0 40px; }
     .hero h1 { font-size: 30px; }
@@ -130,10 +164,16 @@
     .lab-side { display: none; }
     .nav-links a.plain { display: none; }
   }
-  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .reveal { opacity: 1; filter: none; transform: none; }
+    .boot-line { opacity: 1; }
+  }
 </style>
 </head>
 <body>
+<script>document.documentElement.classList.add("js")</script>
 <header class="site">
   <div class="wrap nav">
     <a class="brand" href="#"><span class="brand-tile">Z</span>Zandbox</a>
@@ -149,7 +189,7 @@
 <main class="wrap">
   <div class="hero">
     <h1>Every component. Every state. Your real CSS.</h1>
-    <p class="lede">Zandbox is a component lab for Bun + HTMX projects. It renders your server-template components and Web Components on a stage, styled by your project's own stylesheet — with no build step and no rendering library between you and the result.</p>
+    <p class="lede">Zandbox is a component lab for Bun + HTMX projects. Every component, in every state, on its own stage — styled by the CSS your app actually ships, so what you see here is what your users get. No build step, no rendering library, no second design system to keep in sync.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="#start">Get started</a>
       <span class="cmd">bun run ~/zandbox/engine/cli.ts init <button type="button" data-copy="bun run ~/zandbox/engine/cli.ts init">Copy</button></span>
@@ -165,15 +205,15 @@
         <div class="lab-brand-sub">dev only · fictional data</div>
         <div class="lab-filter">Filter stories</div>
         <div class="lab-group">Tokens</div>
-        <a class="lab-item" href="#how">Color — from DESIGN.md</a>
+        <span class="lab-item">Color — from DESIGN.md</span>
         <div class="lab-group">Components</div>
-        <a class="lab-item is-active" href="#how">Button — states</a>
-        <a class="lab-item" href="#how">Field — label above</a>
-        <a class="lab-item" href="#how">Status chip — tones</a>
-        <a class="lab-item" href="#how">Card — plain &amp; tracking</a>
+        <span class="lab-item is-active">Button — states</span>
+        <span class="lab-item">Field — label above</span>
+        <span class="lab-item">Status chip — tones</span>
+        <span class="lab-item">Card — plain &amp; tracking</span>
         <div class="lab-group">Pages</div>
-        <a class="lab-item" href="#how">Page — settings</a>
-        <a class="lab-item" href="#how">Page — invoices</a>
+        <span class="lab-item">Page — settings</span>
+        <span class="lab-item">Page — invoices</span>
       </aside>
       <div class="lab-main">
         <div class="lab-stage-head"><h3>Components — Button — states</h3><span class="lab-id">button-states</span></div>
@@ -186,28 +226,64 @@
     </div>
   </div>
 
-  <section class="block" id="how">
+  <p class="proof reveal">This lab built <b>Zimer's</b> interface: <b>60 stories</b>, 13 groups, <b>20 tokens</b> from its DESIGN.md — every screen checked here before it shipped.</p>
+
+  <section class="block reveal" id="how">
     <h2>How it works</h2>
     <p class="sub">Your components never know Zandbox exists. A story is a thin file that renders one component in a given state; a single config file gathers the stories and maps your assets. The engine — one small Bun server — does the rest.</p>
     <div class="steps">
       <div class="step"><span class="n">01</span><h3>Write a story</h3><p>One <code>.stories.ts</code> file per component: the component, its states, fictional data. Kept apart from the component, Storybook-style.</p></div>
       <div class="step"><span class="n">02</span><h3>Register it once</h3><p><code>zandbox.config.ts</code> gathers your story arrays, maps your stylesheet, and points at your DESIGN.md if you keep one.</p></div>
-      <div class="step"><span class="n">03</span><h3>Browse the lab</h3><p><code>bun run zandbox</code> — pick a story in the sidebar, see it alone on the stage. Filter as you type; every story has a shareable URL.</p></div>
+      <div class="step"><span class="n">03</span><h3>Browse the lab</h3><p><code>bun run zandbox</code> — the terminal names any story that fails to render; then pick a story in the sidebar and see it alone on the stage. Filter as you type; every story has a shareable URL.</p></div>
     </div>
   </section>
 
-  <section class="block">
+  <section class="block reveal">
     <h2>Built for how Bun + HTMX projects actually work</h2>
-    <p class="sub">No JSX, no bundler, no second design system to keep in sync. If your components are functions that return HTML strings, they already work here.</p>
+    <p class="sub">Four things a lab owes you when your components are server functions, not framework components.</p>
     <div class="feats">
-      <div class="feat"><h3>Your CSS, not a preview of it</h3><p>The lab serves your stylesheet as-is. A story that looks right here looks right in the app, because it is the app's styling.</p></div>
-      <div class="feat"><h3>A Tokens story from your DESIGN.md</h3><p>Point <code>designMd</code> at your design spec and every color token renders as a swatch — drift between spec and screen gets visible.</p></div>
-      <div class="feat"><h3>Dev-only by construction</h3><p>The engine lives in a hidden <code>.zandbox/</code> folder, binds localhost, and renders fictional data. Nothing reaches production.</p></div>
-      <div class="feat"><h3>Nothing to adopt twice</h3><p>The engine imports nothing from your project. The config is the only wiring, and it points one way: config → stories → components.</p></div>
+      <div class="feat"><h3>Catch a broken state before your users do</h3><p>At startup the lab renders every story once and names the ones that throw — in your terminal, before you open the browser. The state you would have found by clicking is the state it reports.</p></div>
+      <div class="feat"><h3>What you see is what ships</h3><p>The lab serves your stylesheet as-is, and your components return the same HTML here that they return in the app. There is no preview layer to drift from production.</p></div>
+      <div class="feat"><h3>Your spec, rendered</h3><p>Point <code>designMd</code> at your DESIGN.md and every color token becomes a swatch story. When the spec and the screen disagree, you can see it — and so can anyone reviewing the change.</p></div>
+      <div class="feat"><h3>Any component, seconds away</h3><p>Filter the sidebar as you type, open a story's bare canvas, share its URL with a reviewer. Stories are files in git next to the components — not rows in a database, not a second codebase.</p></div>
     </div>
+
+  <div class="demo-card reveal">
+    <div class="demo-head">
+      <div><h3>The terminal tells you the truth at startup</h3><p>A real Zandbox boot, on loop. This is the whole startup output — nothing is summarized away.</p></div>
+      <span class="sp"></span>
+      <button type="button" class="demo-pause" id="demo-pause">Pause demo</button>
+    </div>
+    <div class="demo-body" aria-label="Zandbox terminal output at startup">
+      <div class="boot-line k">Zandbox · engine 0.1.0</div>
+      <div class="boot-line">→ http://127.0.0.1:8935</div>
+      <div class="boot-line">Stories: 60 in 13 groups</div>
+      <div class="boot-line">Assets: /static/style.css → site/static/style.css</div>
+      <div class="boot-line">Tokens: 20 colors from DESIGN.md</div>
+      <div class="boot-line k">Render check: all 60 stories render</div>
+    </div>
+  </div>
   </section>
 
-  <section class="block" id="start">
+  <section class="block reveal">
+    <h2>Why not Storybook?</h2>
+    <p class="sub">A fair question — it is the default. The answer is shape.</p>
+    <div class="feats">
+      <div class="feat"><h3>Storybook's shape</h3><p>Framework components rendered through a bundler build: JSX or a framework renderer, a config of addons, a second build to keep green. Superb — if your project already has that machinery.</p></div>
+      <div class="feat"><h3>Zandbox's shape</h3><p>One Bun server and one config file. Your components already return HTML strings; your CSS already exists. There is nothing to compile and nothing new to adopt.</p></div>
+    </div>
+    <p class="sub" style="margin-top:24px">Honestly: if you ship React or Vue with a bundler in the project, Storybook is the right tool and this page is not for you. If your components are functions that return HTML, there is nothing for Storybook to render — and Zandbox starts exactly there.</p>
+  </section>
+
+  <section class="block reveal">
+    <h2>Questions, answered</h2>
+    <div class="faq-item"><h3>Does it work with React or Vue components?</h3><p>No. Zandbox renders components that return HTML strings — server templates and Web Components. Framework components belong in Storybook.</p></div>
+    <div class="faq-item"><h3>Can any of this reach production?</h3><p>No. The engine lives in a hidden <code>.zandbox/</code> folder, binds 127.0.0.1 only, and renders fictional data. It is a development tool by construction, not by configuration.</p></div>
+    <div class="faq-item"><h3>How do I update the engine?</h3><p>Delete <code>.zandbox/</code> and re-run init. Your config, your stories, and your components are never touched — they were never the engine's.</p></div>
+    <div class="faq-item"><h3>What does it cost?</h3><p>Nothing. MIT licensed, source on GitHub, built on Bun.</p></div>
+  </section>
+
+  <section class="block reveal" id="start">
     <h2>Get started</h2>
     <p class="sub">Clone Zandbox once, run init inside your project, start the lab. About five minutes, most of it the clone.</p>
     <div class="term"><span class="c"># 1 — clone Zandbox (once, park it anywhere)</span>
@@ -233,6 +309,15 @@
   </footer>
 </main>
 <script>
+  const io = new IntersectionObserver((entries) => {
+    for (const en of entries) if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  const demoCard = document.querySelector(".demo-card");
+  document.getElementById("demo-pause").addEventListener("click", (e) => {
+    const paused = demoCard.classList.toggle("paused");
+    e.currentTarget.textContent = paused ? "Resume demo" : "Pause demo";
+  });
   document.querySelector("[data-copy]").addEventListener("click", (e) => {
     const btn = e.currentTarget;
     navigator.clipboard.writeText(btn.dataset.copy).then(() => {
