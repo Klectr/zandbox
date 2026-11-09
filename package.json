@@ -1,0 +1,11 @@
+{
+  "name": "zandbox",
+  "version": "0.1.0",
+  "description": "A dev-only component lab for Bun + HTMX projects — a Storybook-shaped sandbox with no rendering library and no build step.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "bun test",
+    "demo": "cd examples/basic && bun ../../engine/server.ts"
+  }
+}
