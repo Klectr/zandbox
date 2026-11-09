@@ -309,7 +309,7 @@ for (const s of STORIES) {
   }
 }
 const assetEntries = Object.entries(cfg.assets ?? {});
-console.log(`${NAME} — Zandbox ${VERSION}`);
+console.log(`${NAME} · engine ${VERSION}`);
 console.log(`→ http://127.0.0.1:${server.port}`);
 console.log(
   `Stories: ${STORIES.length} in ${groupCounts.size} groups — ` +
