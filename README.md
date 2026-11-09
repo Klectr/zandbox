@@ -4,6 +4,10 @@
 state, in your browser, styled by your project's real CSS — no build step,
 no rendering library, no Storybook-sized dependency tree.
 
+<p align="center">
+  <img src="docs/sandbox-hero.png" width="560" alt="Klectr the Alien playing in a sandbox, building a sandcastle out of UI components">
+</p>
+
 ```text
 bun run zandbox   →   http://127.0.0.1:8935
 ```
